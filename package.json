@@ -15,5 +15,34 @@
     "astro": "^5.15.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "@cspell/cspell-types": "^9.3.1",
+    "@prettier/plugin-xml": "^3.4.2",
+    "commitizen": "^4.3.1",
+    "commitlint-config-spellbookx": "^0.4.0",
+    "conventional-changelog-conventionalcommits": "^9.1.0",
+    "cspell": "^9.3.1",
+    "cspell-config-spellbookx": "^0.3.2",
+    "cz-git": "^1.12.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-spellbookx": "^0.3.3",
+    "prettier": "^3.6.2",
+    "prettier-config-spellbookx": "^0.4.0",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-ini": "^1.3.0",
+    "prettier-plugin-packagejson": "^2.5.19",
+    "prettier-plugin-prisma": "^5.0.0",
+    "prettier-plugin-properties": "^0.3.0",
+    "prettier-plugin-sh": "^0.18.0",
+    "prettier-plugin-tailwindcss": "^0.7.1",
+    "prettier-plugin-toml": "^2.0.6"
+  },
+  "config": {
+    "commitizen": {
+      "path": "git-cz"
+    }
   }
 }
