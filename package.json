@@ -16,6 +16,7 @@
     "@fontsource/baloo-2": "^5.2.7",
     "@fontsource/momo-trust-display": "^5.2.1",
     "@fontsource/momo-trust-sans": "^5.2.1",
+    "@jop-software/astro-cookieconsent": "^3.0.1",
     "@mui/material": "^7.3.5",
     "@tabler/icons-react": "^3.35.0",
     "@types/react": "^19.2.4",

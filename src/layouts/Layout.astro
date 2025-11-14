@@ -5,7 +5,6 @@ import '@fontsource/momo-trust-sans';
 import '../styles/global.css';
 
 import { ThemeProvider } from '../components/theme/ThemeProvider.tsx';
-import CookieConsent from '../components/ui/CookieConsent/CookieConsent.astro';
 
 interface Props {
 	lang?: string;
@@ -55,15 +54,8 @@ const canonicalURL = Astro.site
 			{title ? `${title} | Davide Di Criscito` : 'Davide Di Criscito'}
 		</title>
 		<meta name="description" content={description} />
-
-		<!-- Cookie Consent CSS -->
-		<link
-			rel="stylesheet"
-			href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.css"
-		/>
 	</head>
-	<body>
-		<CookieConsent />
+	<body class="cc--dark-turquoise">
 		<ThemeProvider client:load>
 			<slot />
 		</ThemeProvider>
