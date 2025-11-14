@@ -4,14 +4,21 @@ import * as React from 'react';
 
 import Button, { type ButtonProps } from '@mui/material/Button';
 
+interface ButtonComponentProps extends ButtonProps {
+  href?: string;
+}
+
 export function ButtonComponent({
   children,
   variant = 'contained',
+  href,
   ...props
-}: ButtonProps & React.PropsWithChildren) {
+}: ButtonComponentProps & React.PropsWithChildren) {
   return (
     <Button
       variant={variant}
+      href={href}
+      component={href ? 'a' : 'button'}
       {...props}
       sx={{
         boxShadow: 'none',
