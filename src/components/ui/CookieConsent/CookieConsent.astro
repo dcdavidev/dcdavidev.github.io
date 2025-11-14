@@ -1,0 +1,9 @@
+---
+import 'vanilla-cookieconsent/dist/cookieconsent.css';
+import '../CookieConsent/styles.css';
+
+import { CookieConsentComponent } from './CookieConsent.component';
+import { cookieConsentConfig } from './cookieconsent-config';
+---
+
+<CookieConsentComponent {...cookieConsentConfig} client:load />
