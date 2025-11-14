@@ -1,11 +1,16 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import Hero from '../components/ui/Hero/Hero.astro';
+import Typography from '../components/ui/Typography/Typography.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout>
-	<Welcome />
+	<Hero size="screen" color="primary">
+		<Typography variant="h1" component="h1" gutterBottom align="center">
+			Davide Di Criscito
+		</Typography>
+		<Typography variant="h3" component="h2" align="center">
+			Full-Stack Web Developer & Dev Tooling Specialist
+		</Typography>
+	</Hero>
 </Layout>

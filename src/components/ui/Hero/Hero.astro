@@ -1,0 +1,20 @@
+---
+import type { PaperProps, SxProps, Theme } from '@mui/material';
+
+import { HeroComponent } from './Hero.component';
+
+interface Props {
+	contained?: boolean;
+	size?: 'small' | 'medium' | 'large' | 'screen';
+	color?: PaperProps['color'];
+	bgImage?: string;
+	sx?: SxProps<Theme>;
+}
+
+// Estrae tutti i props passati ad Hero.astro
+const props = Astro.props;
+---
+
+<HeroComponent {...props} client:load>
+	<slot />
+</HeroComponent>

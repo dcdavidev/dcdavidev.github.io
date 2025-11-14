@@ -1,0 +1,26 @@
+@import '@fontsource/momo-trust-sans';
+@import '@fontsource/momo-trust-display';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  font-family: 'Momo Trust Sans', sans-serif;
+  font-optical-sizing: 'auto';
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Momo Trust Display', sans-serif;
+}

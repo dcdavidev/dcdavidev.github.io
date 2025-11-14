@@ -1,0 +1,9 @@
+---
+import { TypographyComponent } from './Typography.component';
+
+const props = Astro.props;
+---
+
+<TypographyComponent {...props} client:load>
+	<slot />
+</TypographyComponent>
