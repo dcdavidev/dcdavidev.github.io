@@ -72,8 +72,8 @@ export function BgBubblesComponent({
    */
   const bubblePositions = React.useMemo(() => {
     const totalBubbles = colorCount;
-    const cols = Math.ceil(Math.sqrt(totalBubbles * 0.5));
-    const rows = Math.ceil(totalBubbles / cols);
+    const cols = Math.ceil(Math.sqrt(totalBubbles * 1.5));
+    const rows = Math.ceil(totalBubbles / cols) + 1;
     const totalCells = cols * rows;
 
     // Shuffle available cells
@@ -94,8 +94,8 @@ export function BgBubblesComponent({
       const col = cellIndex % cols;
       const row = Math.floor(cellIndex / cols);
 
-      const jitterX = (Math.random() - 0.5) * cellWidth * 1.2;
-      const jitterY = (Math.random() - 0.5) * cellHeight * 1.2;
+      const jitterX = (Math.random() - 0.5) * cellWidth * 0.4;
+      const jitterY = (Math.random() - 0.5) * cellHeight * 0.4;
 
       return {
         x: col * cellWidth + cellWidth / 2 + jitterX,
@@ -120,8 +120,8 @@ export function BgBubblesComponent({
       });
     };
 
-    globalThis.addEventListener('mousemove', handleMouseMove);
-    return () => globalThis.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [interactive]);
 
   return (
@@ -142,40 +142,32 @@ export function BgBubblesComponent({
         }
 
         @keyframes float {
-          0%, 100% { transform: translateY(-80px); }
-          50% { transform: translateY(80px); }
+          0%, 100% { transform: translateY(-30px); }
+          50% { transform: translateY(30px); }
         }
 
         @keyframes drift {
-          0%, 100% { transform: translateX(-80px); }
-          50% { transform: translateX(80px); }
+          0%, 100% { transform: translateX(-30px); }
+          50% { transform: translateX(30px); }
         }
 
         @keyframes pulse {
-          0%, 100% { transform: scale(0.9); }
-          50% { transform: scale(1.15); }
-        }
-
-        @keyframes wander {
-          0% { transform: translate(0, 0); }
-          25% { transform: translate(50px, -50px); }
-          50% { transform: translate(-30px, 40px); }
-          75% { transform: translate(60px, 30px); }
-          100% { transform: translate(0, 0); }
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.1); }
         }
 
         .bubble-container {
           position: absolute;
-          inset: -40%;
-          filter: url(#gooey) blur(80px);
+          inset: 0;
+          filter: url(#gooey) blur(40px);
           mix-blend-mode: screen;
         }
 
         ${rgbColors
           .map((_, i) => {
-            const animationSpeed = 15 + (i % 4) * 8;
+            const animationSpeed = 20 + (i % 3) * 10;
             const animationType = ['float', 'drift', 'pulse'][i % 3];
-            const baseSize = 600 + (i % 5) * 120;
+            const baseSize = 120 + (i % 5) * 25;
 
             return `
             .bubble-${i} {
@@ -189,8 +181,8 @@ export function BgBubblesComponent({
                 rgba(var(--bubble-color-${i}), 0) 100%
               );
               mix-blend-mode: hard-light;
-              animation: ${animationType} ${animationSpeed}s ease-in-out infinite, wander ${animationSpeed + 10}s ease-in-out infinite;
-              filter: drop-shadow(0 0 30px rgba(var(--bubble-color-${i}), 0.6));
+              animation: ${animationType} ${animationSpeed}s ease-in-out infinite;
+              filter: drop-shadow(0 0 20px rgba(var(--bubble-color-${i}), 0.5));
             }
           `;
           })
@@ -237,7 +229,7 @@ export function BgBubblesComponent({
           if (interactive) {
             const dx = mousePosition.x - pos.x;
             const dy = mousePosition.y - pos.y;
-            const distance = Math.hypot(dx, dy);
+            const distance = Math.sqrt(dx * dx + dy * dy);
 
             if (distance < 30) {
               attractX = dx * 0.3;
