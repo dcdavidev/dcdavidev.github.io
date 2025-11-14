@@ -2,6 +2,8 @@
 
 import React, { useEffect, useRef } from 'react';
 
+import { motion } from 'motion/react';
+
 interface BgBubblesProps extends React.PropsWithChildren {
   interactive?: boolean;
   className?: string;
@@ -12,41 +14,48 @@ interface BgBubblesProps extends React.PropsWithChildren {
   };
 }
 
-// 20 colori con tonalità diverse (6 tonalità principali x variazioni)
+/**
+ * DEFAULT_COLORS: 20 colors across 6 color families (Blue, Pink, Purple, Green, Orange, Yellow)
+ * Each family has 3-4 tonal variations for visual diversity
+ */
 const DEFAULT_COLORS = [
-  // Blu/Ciano
+  // Blue/Cyan family
   '#08A4BD',
   '#00B4C8',
   '#0099B6',
   '#006BA3',
-  // Rosa/Magenta
+  // Pink/Magenta family
   '#D87CAC',
   '#FF6B9D',
   '#FF1493',
   '#E60B7A',
-  // Viola/Indaco
+  // Purple/Indigo family
   '#B45096',
   '#9D4EDD',
   '#7B2CBF',
   '#5A189A',
-  // Verde/Teal
+  // Green/Teal family
   '#00FF88',
   '#00E5A0',
   '#32C8DC',
   '#1DB5B5',
-  // Arancione/Rosso
+  // Orange/Red family
   '#FF6B35',
   '#FF8C42',
   '#FF9800',
   '#FF5733',
-  // Giallo/Oro
+  // Yellow/Gold family
   '#FFD60A',
   '#FFC300',
   '#FFED4E',
   '#FFC800',
 ];
 
-// Convert HEX to RGB
+/**
+ * Converts HEX color format to RGB string format for CSS variable usage
+ * @param hex - HEX color code (e.g., '#FF0000')
+ * @returns RGB string format (e.g., '255,0,0')
+ */
 function hexToRgb(hex: string): string {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   if (!result) return '255,255,255';
@@ -71,22 +80,70 @@ export function BgBubblesComponent({
     Array<{ x: number; y: number; vx: number; vy: number; angle: number }>
   >([]);
   const animationRef = useRef<number | null>(null);
+  const initializedRef = useRef(false);
 
   const colorCount = colors.length;
   const rgbColors = colors.map((color) => hexToRgb(color));
 
-  // Initialize bubblesRef array size and physics state with random positions and angles
+  /**
+   * Generate fixed grid positions that evenly distribute bubbles across the entire canvas
+   * Creates a deterministic pattern ensuring complete viewport coverage with no dead zones
+   * Uses percentage-based positioning for responsive scaling across all viewport sizes
+   * Always generates exactly as many positions as there are colors
+   */
+  const bubbleInitialPositions = React.useMemo(() => {
+    const positions: Array<{ x: number; y: number }> = [];
+    const totalBubbles = colorCount;
+
+    // Calculate grid dimensions based on bubble count
+    const cols = Math.ceil(Math.sqrt(totalBubbles));
+    const rows = Math.ceil(totalBubbles / cols);
+
+    for (let i = 0; i < totalBubbles; i++) {
+      const row = Math.floor(i / cols);
+      const col = i % cols;
+
+      // Calculate position with even distribution across canvas as percentages
+      // Ranges from -50% to 50% of container dimensions
+      const xOffsetPercent = (col / (cols - 1 || 1)) * 100 - 50;
+      const yOffsetPercent = (row / (rows - 1 || 1)) * 100 - 50;
+
+      // Jitter: small random variation (±3% of container) for organic feel
+      const jitterXPercent = (Math.random() - 0.5) * 6;
+      const jitterYPercent = (Math.random() - 0.5) * 6;
+
+      positions.push({
+        x: xOffsetPercent + jitterXPercent,
+        y: yOffsetPercent + jitterYPercent,
+      });
+    }
+    return positions;
+  }, [colorCount]);
+
+  /**
+   * Initialize bubble physics state with grid starting positions
+   * Each bubble gets a grid position, velocity, and angle for autonomous wandering
+   */
   React.useLayoutEffect(() => {
+    if (initializedRef.current) return;
+
     bubblesRef.current = Array.from({ length: colorCount });
-    bubblesPhysicsRef.current = Array.from({ length: colorCount }, () => ({
-      x: (Math.random() - 0.5) * 400, // Random position from -200 to 200
-      y: (Math.random() - 0.5) * 400, // Random position from -200 to 200
+    // Initialize physics state starting from the grid positions
+    bubblesPhysicsRef.current = Array.from({ length: colorCount }, (_, i) => ({
+      x: bubbleInitialPositions[i]?.x || 0,
+      y: bubbleInitialPositions[i]?.y || 0,
       vx: 0,
       vy: 0,
       angle: Math.random() * Math.PI * 2,
     }));
-  }, [colorCount]);
 
+    initializedRef.current = true;
+  }, [bubbleInitialPositions]);
+
+  /**
+   * Track mouse position for interactive cursor attraction
+   * Converts mouse coordinates to container-relative coordinates
+   */
   useEffect(() => {
     if (!interactive) return;
 
@@ -106,27 +163,35 @@ export function BgBubblesComponent({
       currentContainer?.removeEventListener('mousemove', handleMouseMove);
   }, [interactive]);
 
+  /**
+   * Main animation loop using requestAnimationFrame
+   * Updates bubble physics including:
+   * - Autonomous wandering (continuous self-directed movement)
+   * - Mouse attraction (spring physics pulling bubbles toward cursor)
+   * - Damping (friction that slows down movement over time)
+   * - Velocity clamping (prevents erratic fast movement)
+   */
   useEffect(() => {
     if (bubblesRef.current.length === 0) return;
 
     const animate = () => {
       const stiffness = interactive ? transition.stiffness / 1000 : 0;
       const damping = transition.damping / 100;
-      const wanderSpeed = 0.02;
+      const wanderSpeed = 0.02; // Controls autonomous wandering speed
 
       // Update physics for each bubble
       for (let i = 0; i < bubblesPhysicsRef.current.length; i++) {
         const bubble = bubblesPhysicsRef.current[i];
         const bubbleEl = bubblesRef.current[i];
 
-        // Add autonomous wandering movement
+        // Autonomous wandering: bubbles move in random directions smoothly
         bubble.angle += (Math.random() - 0.5) * 0.1;
         const wanderForceX = Math.cos(bubble.angle) * wanderSpeed;
         const wanderForceY = Math.sin(bubble.angle) * wanderSpeed;
         bubble.vx += wanderForceX;
         bubble.vy += wanderForceY;
 
-        // Apply spring force towards mouse only if interactive
+        // Interactive cursor attraction: bubbles move toward cursor within 300px radius
         if (interactive) {
           const dx = mouseX.current - bubble.x;
           const dy = mouseY.current - bubble.y;
@@ -137,22 +202,22 @@ export function BgBubblesComponent({
           }
         }
 
-        // Apply damping
+        // Apply damping (friction) to gradually slow down movement
         bubble.vx *= damping;
         bubble.vy *= damping;
 
-        // Limit max speed
+        // Clamp maximum velocity to prevent erratic movement
         const speed = Math.hypot(bubble.vx, bubble.vy);
         if (speed > 5) {
           bubble.vx = (bubble.vx / speed) * 5;
           bubble.vy = (bubble.vy / speed) * 5;
         }
 
-        // Update position
+        // Update bubble position based on velocity
         bubble.x += bubble.vx;
         bubble.y += bubble.vy;
 
-        // Update DOM with transform that combines animation and position
+        // Apply physics-based position to DOM element
         if (bubbleEl) {
           bubbleEl.style.transform = `translate(${bubble.x}px, ${bubble.y}px)`;
         }
@@ -223,12 +288,13 @@ export function BgBubblesComponent({
             else if (i % 3 === 2) animationType = 'drift';
             const opacity = i === rgbColors.length - 1 ? '0.7' : '1';
 
+            // Larger bubble sizes for complete canvas coverage
+            const baseSize = 100 + (i % 4) * 30; // Increased from 60-100 to 100-220
+
             return `
             .bubble-${i} {
-              top: ${10 + (i % 4) * 15}%;
-              left: ${10 + (i % 5) * 12}%;
-              width: ${60 + (i % 4) * 10}%;
-              height: ${60 + (i % 4) * 10}%;
+              width: ${baseSize}%;
+              height: ${baseSize}%;
               background: radial-gradient(
                 circle at center,
                 rgba(var(--bubble-color-${i}), 0.8) 0%,
@@ -272,15 +338,35 @@ export function BgBubblesComponent({
       </svg>
 
       <div className="bubble-container">
-        {colors.map((color, i) => (
-          <div
-            key={color}
-            ref={(el) => {
-              if (el) bubblesRef.current[i] = el;
-            }}
-            className={`bubble bubble-${i}`}
-          />
-        ))}
+        {colors.map((color, i) => {
+          const initialPos = bubbleInitialPositions[i] || { x: 0, y: 0 };
+
+          return (
+            <motion.div
+              key={color}
+              ref={(el) => {
+                if (el) bubblesRef.current[i] = el;
+              }}
+              className={`bubble bubble-${i}`}
+              initial={{
+                opacity: 0,
+              }}
+              animate={{
+                opacity: 1,
+              }}
+              transition={{
+                duration: 0.8,
+                ease: 'easeOut',
+              }}
+              style={{
+                left: `${initialPos.x}%`,
+                top: `${initialPos.y}%`,
+                x: 0, // Physics engine will override this with transform
+                y: 0, // Physics engine will override this with transform
+              }}
+            />
+          );
+        })}
       </div>
 
       <div
