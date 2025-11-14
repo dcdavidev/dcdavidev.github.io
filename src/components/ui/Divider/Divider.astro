@@ -1,0 +1,26 @@
+---
+import { DividerComponent } from './Divider.component';
+
+interface Props {
+	variant?: 'line' | 'wave';
+	thickness?: number;
+	color?: 'primary' | 'secondary' | string;
+	theme?: 'light' | 'dark';
+	margin?: 'none' | 'small' | 'normal' | 'large';
+	className?: string;
+	style?: React.CSSProperties;
+}
+
+const { variant, thickness, color, theme, margin, className, style } = Astro.props;
+---
+
+<DividerComponent
+	{variant}
+	{thickness}
+	{color}
+	{theme}
+	{margin}
+	{className}
+	{style}
+	client:load
+/>
