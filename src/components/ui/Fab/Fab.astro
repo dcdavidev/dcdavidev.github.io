@@ -1,0 +1,9 @@
+---
+import { FabComponent } from './Fab.component';
+
+const props = Astro.props;
+---
+
+<FabComponent {...props} client:load>
+	<slot />
+</FabComponent>

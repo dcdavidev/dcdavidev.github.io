@@ -1,7 +1,10 @@
 ---
+import { IconCookieFilled } from '@tabler/icons-react';
+
 import Box from '../components/ui/Box/Box.astro';
 import Button from '../components/ui/Button/Button.astro';
 import Container from '../components/ui/Container/Container.astro';
+import Fab from '../components/ui/Fab/Fab.astro';
 import Hero from '../components/ui/Hero/Hero.astro';
 import Typography from '../components/ui/Typography/Typography.astro';
 import Layout from '../layouts/Layout.astro';
@@ -44,4 +47,12 @@ import Layout from '../layouts/Layout.astro';
 			</Container>
 		</Container>
 	</Hero>
+
+	<Fab
+		color="primary"
+		sx={{ position: 'fixed', bottom: 16, left: 16 }}
+		size="large"
+	>
+		<IconCookieFilled size={24} />
+	</Fab>
 </Layout>
