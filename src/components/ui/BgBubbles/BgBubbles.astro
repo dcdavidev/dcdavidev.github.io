@@ -1,0 +1,30 @@
+---
+import { BgBubblesComponent } from './BgBubbles.component';
+
+interface Props {
+	interactive?: boolean;
+	className?: string;
+	colors?: string[];
+	transition?: {
+		stiffness: number;
+		damping: number;
+	};
+}
+
+const {
+	interactive = true,
+	className,
+	colors,
+	transition = { stiffness: 100, damping: 20 }
+} = Astro.props;
+---
+
+<BgBubblesComponent
+	{interactive}
+	{className}
+	{colors}
+	{transition}
+	client:load
+>
+	<slot />
+</BgBubblesComponent>

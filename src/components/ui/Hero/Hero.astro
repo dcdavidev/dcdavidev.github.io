@@ -1,20 +1,31 @@
 ---
-import type { PaperProps, SxProps, Theme } from '@mui/material';
-
 import { HeroComponent } from './Hero.component';
+
+type BackgroundConfig =
+  | false
+  | { variant: 'image'; url: string }
+  | { variant: 'bubbles'; interactive?: boolean; colors?: string[]; transition?: { stiffness: number; damping: number } }
+  | { variant: 'color'; color: string };
 
 interface Props {
 	contained?: boolean;
 	size?: 'small' | 'medium' | 'large' | 'screen';
-	color?: PaperProps['color'];
-	bgImage?: string;
-	sx?: SxProps<Theme>;
+	background?: BackgroundConfig;
+	className?: string;
+	style?: React.CSSProperties;
 }
 
 // Estrae tutti i props passati ad Hero.astro
-const props = Astro.props;
+const { contained, size, background, className, style } = Astro.props;
 ---
 
-<HeroComponent {...props} client:load>
+<HeroComponent
+	{contained}
+	{size}
+	{background}
+	{className}
+	{style}
+	client:load
+>
 	<slot />
 </HeroComponent>
