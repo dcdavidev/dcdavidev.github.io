@@ -31,9 +31,33 @@ export function FabComponent({
   color = 'primary',
   size = 'large',
   href,
+  onClick,
   ...props
 }: FabComponentProps & React.PropsWithChildren) {
   const theme = useTheme();
+
+  // Handle data-cc click for cookie consent
+  const handleClick = React.useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      const target = event.currentTarget;
+      const ccAction = target.getAttribute('data-cc');
+
+      if (ccAction === 'show-preferencesModal') {
+        event.preventDefault();
+        // @ts-ignore - cookieConsent is injected by astro-cookieconsent
+        if (typeof window !== 'undefined' && window.cookieConsent) {
+          // @ts-ignore
+          window.cookieConsent.showPreferences();
+        }
+      }
+
+      // Call original onClick if provided
+      if (onClick) {
+        onClick(event);
+      }
+    },
+    [onClick]
+  );
 
   // Get color from theme palette
   const getColor = () => {
@@ -129,6 +153,7 @@ export function FabComponent({
       size={size}
       href={href}
       component={href ? 'a' : 'button'}
+      onClick={handleClick}
       {...props}
       sx={{
         ...getStyles(),

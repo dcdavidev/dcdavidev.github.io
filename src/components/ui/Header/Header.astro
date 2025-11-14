@@ -1,0 +1,17 @@
+---
+import Box from '../Box/Box.astro';
+import Hero from '../Hero/Hero.astro';
+
+const { background = false, contained = true } = Astro.props;
+---
+
+<Hero
+	size="medium"
+	contained={contained}
+	background={background}
+	className="header-hero"
+>
+	<Box pt={6}>
+		<slot />
+	</Box>
+</Hero>

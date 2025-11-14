@@ -71,9 +71,9 @@ export function HeroComponent({
   };
 
   const content = contained ? (
-    children
-  ) : (
     <Container maxWidth="lg">{children}</Container>
+  ) : (
+    children
   );
 
   if (
