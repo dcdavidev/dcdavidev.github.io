@@ -1,10 +1,21 @@
 ---
 import Box from '../../components/ui/Box/Box.astro';
-import Container from '../../components/ui/Container/Container.astro';
 import Divider from '../../components/ui/Divider/Divider.astro';
 import Header from '../../components/ui/Header/Header.astro';
+import Select from '../../components/ui/Select/Select.astro';
 import Typography from '../../components/ui/Typography/Typography.astro';
 import Layout from '../../layouts/Layout.astro';
+
+export const prerender = false;
+
+// Get user language from browser Accept-Language header
+const acceptLanguage = Astro.request.headers.get('accept-language');
+const browserLang = acceptLanguage?.split(',')[0].split('-')[0] || 'en';
+
+const languageOptions = [
+	{ value: 'it', label: 'Italiano' },
+	{ value: 'en', label: 'English' },
+];
 ---
 
 <Layout>
@@ -13,44 +24,10 @@ import Layout from '../../layouts/Layout.astro';
 			Privacy Policy
 		</Typography>
 
-		<Typography variant="body1" mt={4} mb={4}>
-			Your privacy is important to us. This Privacy Policy explains how we
-			collect, use, and protect your personal information when you visit our
-			website.
-		</Typography>
+		<Box>
+			<Select color="primary" options={languageOptions} value={browserLang} />
+		</Box>
 	</Header>
 
 	<Divider variant="wave" theme="dark" color="primary" />
-
-	<Container>
-		<Box>
-			<Typography variant="h2" mt={4} mb={2}>
-				Information We Collect
-			</Typography>
-			<Typography variant="body1" mt={2} mb={4}>
-				We may collect personal information such as your name, email address,
-				and browsing behavior on our site.
-			</Typography>
-
-			<Typography variant="h2" mt={4} mb={2}>
-				How We Use Your Information
-			</Typography>
-			<Typography variant="body1" mt={2} mb={4}>
-				We use your information to improve our website, provide customer
-				support, and send you updates about our services.
-			</Typography>
-
-			<Typography variant="h2" mt={4} mb={2}> Data Security </Typography>
-			<Typography variant="body1" mt={2} mb={4}>
-				We implement security measures to protect your personal information from
-				unauthorized access or disclosure.
-			</Typography>
-
-			<Typography variant="h2" mt={4} mb={2}> Contact Us </Typography>
-			<Typography variant="body1" mt={2} mb={4}>
-				If you have any questions about this Privacy Policy, please contact us
-				at
-			</Typography>
-		</Box>
-	</Container>
 </Layout>

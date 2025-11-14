@@ -4,7 +4,8 @@ import '@fontsource/momo-trust-sans';
 
 import '../styles/global.css';
 
-import { ThemeProvider } from '../components/theme/ThemeProvider.tsx';
+import { JoyThemeProvider } from '../components/theme/joy';
+import { MuiThemeProvider } from '../components/theme/mui';
 
 interface Props {
 	lang?: string;
@@ -12,8 +13,12 @@ interface Props {
 	description?: string;
 }
 
+// Get user language from browser Accept-Language header
+const acceptLanguage = Astro.request.headers.get('accept-language');
+const browserLang = acceptLanguage?.split(',')[0].split('-')[0] || 'en';
+
 const {
-	lang = 'it',
+	lang = browserLang,
 	title,
 	description = 'Full-Stack Developer & Dev Tooling Specialist.',
 } = Astro.props;
@@ -56,8 +61,10 @@ const canonicalURL = Astro.site
 		<meta name="description" content={description} />
 	</head>
 	<body class="cc--dark-turquoise">
-		<ThemeProvider client:load>
-			<slot />
-		</ThemeProvider>
+		<MuiThemeProvider client:load>
+			<JoyThemeProvider client:load>
+				<slot />
+			</JoyThemeProvider>
+		</MuiThemeProvider>
 	</body>
 </html>
