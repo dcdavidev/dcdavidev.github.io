@@ -1,0 +1,9 @@
+---
+import { PaperComponent } from './Paper.component';
+
+const props = Astro.props;
+---
+
+<PaperComponent {...props} client:load>
+	<slot />
+</PaperComponent>

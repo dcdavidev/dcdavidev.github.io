@@ -1,0 +1,9 @@
+---
+import { ButtonComponent } from './Button.component';
+
+const props = Astro.props;
+---
+
+<ButtonComponent {...props} client:load>
+	<slot />
+</ButtonComponent>

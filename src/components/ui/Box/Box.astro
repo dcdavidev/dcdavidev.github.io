@@ -1,0 +1,9 @@
+---
+import { BoxComponent } from './Box.component';
+
+const props = Astro.props;
+---
+
+<BoxComponent {...props} client:load>
+	<slot />
+</BoxComponent>

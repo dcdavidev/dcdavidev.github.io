@@ -1,0 +1,8 @@
+---
+import { ContainerComponent } from './Container.component.tsx';
+const props = Astro.props;
+---
+
+<ContainerComponent {...props} client:load>
+	<slot />
+</ContainerComponent>
