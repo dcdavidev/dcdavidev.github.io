@@ -54,20 +54,8 @@ import Layout from '../layouts/Layout.astro';
 		sx={{ position: 'fixed', bottom: 16, left: 16 }}
 		size="large"
 		id="cookie-preferences-fab"
+		data-cc="show-preferencesModal"
 	>
 		<IconCookieFilled size={24} />
 	</Fab>
 </Layout>
-
-<script>
-	const fab = document.getElementById('cookie-preferences-fab');
-	if (fab) {
-		fab.addEventListener('click', () => {
-			// @ts-ignore - cookieConsent is injected by astro-cookieconsent
-			if (window.cookieConsent) {
-				// @ts-ignore
-				window.cookieConsent.showPreferences();
-			}
-		});
-	}
-</script>
