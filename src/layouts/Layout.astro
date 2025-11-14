@@ -5,10 +5,22 @@ import '@fontsource/momo-trust-sans';
 import '../styles/global.css';
 
 import { ThemeProvider } from '../components/theme/ThemeProvider.tsx';
+
+interface Props {
+	lang?: string;
+	title?: string;
+	description?: string;
+}
+
+const {
+	lang = 'it',
+	title,
+	description = 'Full-Stack Developer & Dev Tooling Specialist.',
+} = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -32,7 +44,10 @@ import { ThemeProvider } from '../components/theme/ThemeProvider.tsx';
 		<link rel="manifest" href="/site.webmanifest" />
 
 		<meta name="generator" content={Astro.generator} />
-		<title></title>
+		<title>
+			{title ? `${title} | Davide Di Criscito` : 'Davide Di Criscito'}
+		</title>
+		<meta name="description" content={description} />
 	</head>
 	<body>
 		<ThemeProvider client:load>
