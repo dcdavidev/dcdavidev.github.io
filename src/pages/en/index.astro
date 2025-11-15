@@ -1,16 +1,26 @@
 ---
 import { IconCookieFilled } from '@tabler/icons-react';
 
-import Box from '../components/ui/Box/Box.astro';
-import Button from '../components/ui/Button/Button.astro';
-import Container from '../components/ui/Container/Container.astro';
-import Fab from '../components/ui/Fab/Fab.astro';
-import Hero from '../components/ui/Hero/Hero.astro';
-import Typography from '../components/ui/Typography/Typography.astro';
-import Layout from '../layouts/Layout.astro';
+import Box from '../../components/ui/Box/Box.astro';
+import Button from '../../components/ui/Button/Button.astro';
+import Container from '../../components/ui/Container/Container.astro';
+import Fab from '../../components/ui/Fab/Fab.astro';
+import Hero from '../../components/ui/Hero/Hero.astro';
+import Typography from '../../components/ui/Typography/Typography.astro';
+import Layout from '../../layouts/Layout.astro';
+
+const alternateUrls = {
+	it: '/it',
+	en: '/en',
+};
 ---
 
-<Layout lang="en" alternateUrls={{ it: '/', en: '/' }}>
+<Layout
+	lang="en"
+	title="Welcome"
+	description="Full-Stack Developer & Dev Tooling Specialist. Powering web solutions."
+	alternateUrls={alternateUrls}
+>
 	<Hero size="screen" background={{ variant: 'bubbles', interactive: true }}>
 		<Container>
 			<Box mb={6} sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -26,11 +36,11 @@ import Layout from '../layouts/Layout.astro';
 					Davide Di Criscito
 				</Typography>
 				<Typography variant="h4" align="center" color="white">
-					Sviluppatore Full-Stack & Specialista in Dev Tooling
+					Full-Stack Developer & Dev Tooling Specialist
 				</Typography>
 				<Typography variant="h4" align="center" color="white" mt={2} />
 				<Typography variant="h5" align="center" color="white" italic>
-					potenziando soluzioni web
+					powering web solutions
 				</Typography>
 			</Box>
 

@@ -1,16 +1,21 @@
 ---
 import { IconCookieFilled } from '@tabler/icons-react';
 
-import Box from '../components/ui/Box/Box.astro';
-import Button from '../components/ui/Button/Button.astro';
-import Container from '../components/ui/Container/Container.astro';
-import Fab from '../components/ui/Fab/Fab.astro';
-import Hero from '../components/ui/Hero/Hero.astro';
-import Typography from '../components/ui/Typography/Typography.astro';
-import Layout from '../layouts/Layout.astro';
+import Box from '../../components/ui/Box/Box.astro';
+import Button from '../../components/ui/Button/Button.astro';
+import Container from '../../components/ui/Container/Container.astro';
+import Fab from '../../components/ui/Fab/Fab.astro';
+import Hero from '../../components/ui/Hero/Hero.astro';
+import Typography from '../../components/ui/Typography/Typography.astro';
+import Layout from '../../layouts/Layout.astro';
+
+const alternateUrls = {
+	it: '/it',
+	en: '/en',
+};
 ---
 
-<Layout lang="en" alternateUrls={{ it: '/', en: '/' }}>
+<Layout lang="it" title="Home" alternateUrls={alternateUrls}>
 	<Hero size="screen" background={{ variant: 'bubbles', interactive: true }}>
 		<Container>
 			<Box mb={6} sx={{ display: 'flex', justifyContent: 'center' }}>

@@ -5,6 +5,14 @@ import cookieconsent from '@jop-software/astro-cookieconsent';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://dcdavidev.github.io',
+  i18n: {
+    defaultLocale: 'it',
+    locales: ['it', 'en'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
   integrations: [
     react(),
     cookieconsent({
